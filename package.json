@@ -1,0 +1,10 @@
+{
+    "name": "housedairy",
+    "version": "1.0.0",
+    "scripts": {
+        "start:frontend": "cd frontend && npm run dev",
+        "start:backend": "cd backend && npm run start",
+        "install:all": "cd frontend && npm i && cd ../backend && npm i",
+        "start:all": "start cmd /k cd frontend && npm run dev && start cmd /k cd backend && npm run start"
+    }
+}

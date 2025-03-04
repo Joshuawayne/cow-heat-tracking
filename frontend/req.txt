@@ -1,0 +1,146 @@
+Full System Requirements
+Purpose
+The housedairy system is a dairy management tool to track and manage cows, their breeding cycles, and milk production, providing an intuitive interface for small-scale dairy farmers.
+Core Functionalities
+Cow Registration and Management
+Data Points:
+tag: Unique identifier (e.g., "C001")—required.
+
+name: Cow’s name (e.g., "Bessie")—optional.
+
+birth_date: Date of birth (e.g., "2023-06-01")—optional, for age calculation.
+
+purchase_date: Date purchased (if not born)—optional, alternative to birth date.
+
+age_cow_years: Calculated age in years (e.g., 2.63)—auto-generated from birth_date.
+
+category: Auto-set based on age:
+< 1 year: "Calf"
+
+1–2.5 years: "Heifer"
+
+2.5 years: "Cow"
+
+status: Auto-set based on age or breeding:
+< 1.5 years: "N/A"
+
+≥ 1.5 years: "Eligible" (for breeding)
+
+Later: "Pregnant", "Dry" (from breeding/milk data)
+
+group_name: Custom group (e.g., "Herd A")—optional.
+
+dam_id, sire_id, granddam_id, grandsire_id: Lineage IDs linking to other cows—optional, nullable.
+
+lifecycle: "Born" (if birth_date) or "Purchased" (if purchase_date)—auto-set.
+
+Features:
+Register new cows with minimal input (tag required, others optional).
+
+List all cows with calculated fields (age, category, status).
+
+View lineage (e.g., dam’s tag) when IDs are provided.
+
+Breeding Cycle Management
+Data Points:
+cow_id: Links to cows.id—required.
+
+stage: Breeding stage (e.g., "pre_heat", "heat", "post_heat", "pregnant")—required.
+
+date: Event date (e.g., "2025-03-01")—required.
+
+success: Boolean (true/false)—optional, defaults to false if omitted.
+
+insemination_date: Date of insemination (e.g., "2025-03-01")—optional, triggers EDDs.
+
+early_edd: Expected delivery date (273 days from insemination)—auto-calculated.
+
+normal_edd: Expected delivery (280 days)—auto-calculated.
+
+late_edd: Expected delivery (287 days)—auto-calculated.
+
+steaming_date: 45 days before normal EDD—auto-calculated.
+
+drying_date: 60 days before normal EDD—auto-calculated.
+
+Features:
+Log breeding events (e.g., heat detection, insemination).
+
+Auto-calculate EDDs and steaming/drying dates when success is true and insemination_date is provided.
+
+List all breeding events per cow with calculated dates.
+
+Milk Production Tracking
+Data Points:
+cow_id: Links to cows.id—required.
+
+session_type: "Morning", "Afternoon", "Evening"—required.
+
+liters: Milk yield (e.g., 10)—required.
+
+date: Session date (e.g., "2025-03-02")—required.
+
+Features:
+Log daily milk sessions per cow.
+
+List all sessions with totals per cow or date range.
+
+UX/UI Goals
+Simplicity: Easy-to-use interface for farmers—minimal clicks to log/view data.
+
+Clarity: Display key info (cow list, breeding dates, milk yields) in an organized, readable format.
+
+Responsiveness: Works on desktop (your old PC) and scales for future mobile use.
+
+Feedback: Alerts for successful actions (e.g., "Cow registered") or errors.
+
+Technical Requirements
+Backend: Node.js with Express, serving APIs and static HTML/CSS.
+APIs: /cow/register, /cow/all, /breeding/log, /breeding/all, /milk/log, /milk/all.
+
+Port: 3000.
+
+Database: Supabase—three tables (cows, breeding_events, milk_sessions).
+
+Frontend: Static HTML/CSS/JS served by Express (no Vite/React).
+CDN Libraries: Bootstrap (UI), Axios (API calls)—ensures great UX/UI without local dependencies.
+
+Environment: Runs in CMD—backend at http://localhost:3000, HTML served from there.
+
+Non-Functional Requirements
+Reliability: No crashes—consistent API responses.
+
+Scalability: Easy to add features (e.g., analytics) later.
+
+Maintainability: Clean code, minimal dependencies.
+
+Step-by-Step Plan (Fresh Start)
+Step 1: Setup Structure
+Batch File: Already provided—creates backend/, supabase/, root files.
+
+Run: setup.bat—confirms structure.
+
+Step 2: Populate and Test Backend + HTML
+Install:
+CMD: cd C:\Users\morga\housedairy.
+
+npm run install:all.
+
+Populate Files: Use exact code from previous message—server.js, cow.js, etc., and index.html with cow registration only for now.
+
+Test:
+npm run start:backend.
+
+Open http://localhost:3000—form should work.
+
+Curl: curl -X GET http://localhost:3000/cow/all.
+
+Step 3: Supabase Tables
+Run 001_cows.sql, 002_breeding.sql, 003_milk.sql in Supabase—already defined.
+
+Step 4: Full HTML Frontend
+Update index.html with breeding and milk sections (as shown)—test each form.
+
+Step 5: Enhance UX/UI
+Add Bootstrap styling, refine layout—keep it farmer-friendly.
+
